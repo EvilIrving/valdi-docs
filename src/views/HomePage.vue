@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import { HOME_CONTENT } from '@/utils/docs-logic'
+import { useSeo } from '@/composables/useSeo'
+
+// SEO for homepage
+useSeo({
+	title: 'Vadli Documentation - Cross-Platform App Development Framework',
+	description: 'Comprehensive documentation for Vadli, a powerful framework for building cross-platform applications. Learn core concepts, API references, and step-by-step tutorials.',
+	canonical: 'https://vadli-docs.onecat.dev/',
+	ogType: 'website'
+})
 </script>
 
 <template>

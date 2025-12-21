@@ -14,7 +14,9 @@
     "type-check": "vue-tsc --build",
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix --cache",
-    "lint": "run-s lint:*"
+    "lint": "run-s lint:*",
+    "generate:sitemap": "jiti scripts/generate-sitemap.ts",
+    "prebuild": "pnpm generate:sitemap"
   },
   "dependencies": {
     "vue": "^3.5.25",
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.3",
+    "@types/glob": "^9.0.0",
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.2",
     "@vitejs/plugin-vue-jsx": "^5.1.2",
@@ -30,6 +33,7 @@
     "eslint": "^9.39.1",
     "eslint-plugin-oxlint": "~1.29.0",
     "eslint-plugin-vue": "~10.5.1",
+    "glob": "^13.0.0",
     "jiti": "^2.6.1",
     "npm-run-all2": "^8.0.4",
     "oxlint": "~1.29.0",
