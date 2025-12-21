@@ -1,8 +1,11 @@
 {
-	"name": "my-app",
+	"name": "vadli-docs",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
+	"workspaces": [
+		"."
+	],
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
