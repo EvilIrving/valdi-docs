@@ -90,7 +90,8 @@ function extractTitleFromDoc(doc: Doc): string {
 
   const parts = doc.slug.split('/');
   const filename = parts[parts.length - 1];
-  if (filename) {
+  // 修复类型错误：确保 filename 存在且不为空
+  if (filename && filename.trim() !== '') {
     return extractTitleFromFilename(filename);
   }
   return 'Untitled';
@@ -264,7 +265,8 @@ export function getCodelabsNavigation(): NavSection[] {
         }
 
         const orderMatch = filename.match(/^(\d+)-/);
-        const order = orderMatch ? parseInt(orderMatch[1]) : 99;
+        // 修复类型错误：确保 orderMatch 存在并且有第一个捕获组
+        const order = orderMatch && orderMatch[1] ? parseInt(orderMatch[1], 10) : 99;
 
         sections.get(sectionKey)!.push({
           title: extractTitleFromDoc(doc),
@@ -396,19 +398,19 @@ export const HOME_CONTENT: HomeContentConfig = {
       title: 'Documentation',
       description: 'Comprehensive guides covering all aspects of Vadli development.',
       linkHref: '/docs/start-introduction',
-      linkLabel: 'Read the docs →'
+      linkLabel: 'Read the docs'
     },
     {
       title: 'Code Labs',
       description: 'Step-by-step tutorials to help you learn by doing.',
       linkHref: '/codelabs/getting_started/1-introduction',
-      linkLabel: 'Start learning →'
+      linkLabel: 'Start learning'
     },
     {
       title: 'API Reference',
       description: 'Detailed API documentation for all elements and attributes.',
       linkHref: '/api/api-quick-reference',
-      linkLabel: 'View API →'
+      linkLabel: 'View API'
     }
   ]
 };

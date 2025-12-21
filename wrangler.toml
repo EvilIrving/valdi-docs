@@ -6,7 +6,6 @@ account_id = "747065b1adc6a0ad30cfc001dde4d491"
 # 静态资源配置 (Vue + Vite 构建输出目录)
 [assets]
 directory = "./dist"
-binding = "ASSETS"
 
 # 自定义域名配置
 routes = [
