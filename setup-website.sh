@@ -136,26 +136,26 @@ cat > src/lib/components/Sidebar.svelte << 'EOF'
 		{
 			title: 'Getting Started',
 			items: [
-				{ title: 'Introduction', href: '/docs/docs/start-introduction' },
-				{ title: 'Installation', href: '/docs/docs/start-install' },
-				{ title: 'About', href: '/docs/docs/start-about' }
+				{ title: 'Introduction', href: '/docs/start-introduction' },
+				{ title: 'Installation', href: '/docs/start-install' },
+				{ title: 'About', href: '/docs/start-about' }
 			]
 		},
 		{
 			title: 'Core Concepts',
 			items: [
-				{ title: 'Components', href: '/docs/docs/core-component' },
-				{ title: 'States', href: '/docs/docs/core-states' },
-				{ title: 'Events', href: '/docs/docs/core-events' },
-				{ title: 'Styling', href: '/docs/docs/core-styling' }
+				{ title: 'Components', href: '/core-component' },
+				{ title: 'States', href: '/core-states' },
+				{ title: 'Events', href: '/core-events' },
+				{ title: 'Styling', href: '/core-styling' }
 			]
 		},
 		{
 			title: 'API Reference',
 			items: [
-				{ title: 'Quick Reference', href: '/docs/api/api-quick-reference' },
-				{ title: 'Elements', href: '/docs/api/api-reference-elements' },
-				{ title: 'Style Attributes', href: '/docs/api/api-style-attributes' }
+				{ title: 'Quick Reference', href: '/api/api-quick-reference' },
+				{ title: 'Elements', href: '/api/api-reference-elements' },
+				{ title: 'Style Attributes', href: '/api/api-style-attributes' }
 			]
 		},
 		{
@@ -251,8 +251,8 @@ cat > src/routes/+layout.svelte << 'EOF'
 			<a href="/">Vadli Docs</a>
 		</div>
 		<nav class="top-nav">
-			<a href="/docs/docs/start-introduction">Docs</a>
-			<a href="/docs/api/api-quick-reference">API</a>
+			<a href="/docs/start-introduction">Docs</a>
+			<a href="/api/api-quick-reference">API</a>
 			<a href="/docs/codelabs/getting_started/1-introduction">Tutorials</a>
 		</nav>
 	</header>
@@ -334,8 +334,8 @@ cat > src/routes/+page.svelte << 'EOF'
 	<p>Learn how to build cross-platform applications with Vadli</p>
 	
 	<div class="actions">
-		<a href="/docs/docs/start-introduction" class="btn primary">Get Started</a>
-		<a href="/docs/api/api-quick-reference" class="btn secondary">API Reference</a>
+		<a href="/docs/start-introduction" class="btn primary">Get Started</a>
+		<a href="/api/api-quick-reference" class="btn secondary">API Reference</a>
 	</div>
 </div>
 
@@ -343,7 +343,7 @@ cat > src/routes/+page.svelte << 'EOF'
 	<div class="feature">
 		<h3>📚 Documentation</h3>
 		<p>Comprehensive guides covering all aspects of Vadli development.</p>
-		<a href="/docs/docs/start-introduction">Read the docs →</a>
+		<a href="/docs/start-introduction">Read the docs →</a>
 	</div>
 	
 	<div class="feature">
@@ -355,7 +355,7 @@ cat > src/routes/+page.svelte << 'EOF'
 	<div class="feature">
 		<h3>📖 API Reference</h3>
 		<p>Detailed API documentation for all elements and attributes.</p>
-		<a href="/docs/api/api-quick-reference">View API →</a>
+		<a href="/api/api-quick-reference">View API →</a>
 	</div>
 </div>
 

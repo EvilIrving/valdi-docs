@@ -1,33 +1,19 @@
 # wrangler.toml
-name = "vadli-docs"             # Worker 名称，确保和 Cloudflare Pages 一致
-main = "./.svelte-kit/output/server/index.js"   # SvelteKit server 输出入口
-compatibility_date = "2025-12-21"              # 添加兼容性日期
-compatibility_flags = ["nodejs_compat"]        # 开启 Node 内置模块兼容
-account_id = "747065b1adc6a0ad30cfc001dde4d491"             # Cloudflare 账号 ID
-workers_dev = false                              # 使用自定义域名时设为 false
+name = "vadli-docs"
+compatibility_date = "2025-12-21"
+account_id = "747065b1adc6a0ad30cfc001dde4d491"
+
+# 静态资源配置 (Vue + Vite 构建输出目录)
+[assets]
+directory = "./dist"
+binding = "ASSETS"
 
 # 自定义域名配置
 routes = [
   { pattern = "vadli-docs.onecat.dev", zone_name = "onecat.dev" }
 ]
 
-# 静态资源目录配置
-[assets]
-directory = "./.svelte-kit/output/client"
-binding = "ASSETS"
-
-# 可选：绑定 KV 或环境变量
-# [[vars]]
-# name = "MY_ENV_VAR"
-# value = "value_here"
-
-# 构建输出设置（如果使用 Cloudflare Pages）
-[build]
-command = "pnpm run build"
-cwd = "."
-watch_dir = ".svelte-kit/output/server"
-
-# 本地开发端口（可选）
+# 本地开发端口
 [dev]
 port = 5173
 local_protocol = "http"
