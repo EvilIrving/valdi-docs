@@ -6,7 +6,7 @@ export interface NavItem { title: string; href: string; order?: number }
 export interface NavSection { title: string; items: NavItem[]; order: number }
 export interface RouteResult<T> { status: number; data?: T; error?: Error }
 export interface DocRouteData { content: string; metadata: Record<string, unknown> }
-export interface HomeConfig { title: string; subtitle: string; primary: NavItem; secondary: NavItem; features: { title: string; desc: string; href: string; label: string }[]; aboutMarkdown?: { title: string; desc: string; repoUrl: string } }
+export interface HomeConfig { title: string; subtitle: string; primary: NavItem; secondary: NavItem; features: { title: string; desc: string; href: string; label: string; icon: string }[]; quickLinks?: { title: string; desc: string; href: string; icon: string }[]; aboutMarkdown?: { title: string; desc: string; repoUrl: string } }
 
 // content loading
 const mods = import.meta.glob<DocModule>('/src/content/**/*.md', { eager: true, query: '?raw' })
@@ -114,14 +114,20 @@ export const HOME: HomeConfig = {
   subtitle: 'Learn how to build cross-platform applications with Vadli',
   primary: { title: 'Get Started', href: '/docs/start-introduction' },
   secondary: { title: 'API Reference', href: '/api/api-quick-reference' },
+  quickLinks: [
+    { title: 'Getting Started', desc: 'Installation & first app', href: '/docs/start-install', icon: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a.75.75 0 01.75.75v5.69l1.22-1.22a.75.75 0 111.06 1.06l-2.5 2.5a.75.75 0 01-1.06 0l-2.5-2.5a.75.75 0 111.06-1.06l1.22 1.22V1.75A.75.75 0 018 1zM1.75 8a.75.75 0 01.75.75v3.75a.75.75 0 00.75.75h8.5a.75.75 0 00.75-.75v-3.75a.75.75 0 011.5 0v3.75A2.25 2.25 0 0111.75 16h-8.5A2.25 2.25 0 011 13.75v-3.75A.75.75 0 011.75 8z"/></svg>' },
+    { title: 'Core Concepts', desc: 'Components, state & more', href: '/docs/core-component', icon: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.47 3.22a.75.75 0 011.06 0L10 5.94l2.47-2.72a.75.75 0 111.06 1.06L10 8.06l-3.47-3.78a.75.75 0 010-1.06z"/></svg>' },
+    { title: 'Native Integration', desc: 'iOS & Android APIs', href: '/docs/native-bindings', icon: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 5.5a3 3 0 013-3h1v11.5a2 5 0 01-2 2H6.5a2 5 0 01-2-2V5.5zm3 5a2 2 0 100-4 2 2 0 000 4zm3-2a1 1 0 11-2 0 1 1 0 012 0z"/></svg>' },
+    { title: 'API Reference', desc: 'Complete element docs', href: '/api/api-quick-reference', icon: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1.5A1.5 1.5 0 013 3h10a1.5 1.5 0 011.5 1.5v10a1.5 1.5 0 01-1.5 1.5H3a1.5 1.5 0 01-1.5-1.5V1.5zM3 2h10a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V4a2 2 0 012-2z"/></svg>' }
+  ],
   features: [
-    { title: 'Documentation', desc: 'Comprehensive guides covering all aspects of Vadli development.', href: '/docs/start-introduction', label: 'Read the docs' },
-    { title: 'Code Labs', desc: 'Step-by-step tutorials to help you learn by doing.', href: '/codelabs/getting_started/1-introduction', label: 'Start learning' },
-    { title: 'API Reference', desc: 'Detailed API documentation for all elements and attributes.', href: '/api/api-quick-reference', label: 'View API' }
+    { title: 'Comprehensive Docs', desc: 'In-depth guides covering all aspects of Vadli development, from basics to advanced patterns.', href: '/docs/start-introduction', label: 'Browse docs', icon: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1.5A1.5 1.5 0 013 3h10a1.5 1.5 0 011.5 1.5v10a1.5 1.5 0 01-1.5 1.5H3a1.5 1.5 0 01-1.5-1.5V1.5zM3 2h10a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V4a2 2 0 012-2z"/></svg>' },
+    { title: 'Hands-on Codelabs', desc: 'Step-by-step tutorials where you build real features and learn by doing.', href: '/codelabs/getting_started/1-introduction', label: 'Start codelabs', icon: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a.75.75 0 01.75.75v5.69l1.22-1.22a.75.75 0 111.06 1.06l-2.5 2.5a.75.75 0 01-1.06 0l-2.5-2.5a.75.75 0 111.06-1.06l1.22 1.22V1.75A.75.75 0 018 1z"/></svg>' },
+    { title: 'Complete API Reference', desc: 'Detailed documentation for all elements, attributes, and standard library APIs.', href: '/api/api-quick-reference', label: 'View API', icon: '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1.5A1.5 1.5 0 013 3h10a1.5 1.5 0 011.5 1.5v10a1.5 1.5 0 01-1.5 1.5H3a1.5 1.5 0 01-1.5-1.5V1.5zM3 2h10a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V4a2 2 0 012-2z"/></svg>' }
   ],
   aboutMarkdown: {
-    title: 'About This Documentation Site',
-    desc: 'The official GitHub documentation requires switching directories to view Markdown files, which loads slowly and provides poor user experience. Parsing Markdown itself is straightforward, but implementing all the edge cases and special syntax features requires significant effort. Prioritizing a fast-loading web version of the documentation was more important.',
-    repoUrl: 'https://github.com/onecat-cn/vadli-docs'
+    title: 'About Vadli Docs',
+    desc: 'This is the web documentation for Vadli (formerly Snap Layout), built by the community for better accessibility, searchability, and offline support. Fast, beautiful, and always available.',
+    repoUrl: 'https://github.com/EvilIrving/vadli-docs'
   }
 }
