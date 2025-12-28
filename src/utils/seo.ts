@@ -1,4 +1,4 @@
-// SEO utility functions for managing meta tags dynamically
+// seo.ts - SEO utility functions (Unix style)
 
 export interface SeoMetaData {
   title?: string
@@ -12,7 +12,7 @@ export interface SeoMetaData {
   robots?: string
 }
 
-const DEFAULT_SEO: SeoMetaData = {
+const DEFAULT: SeoMetaData = {
   title: 'Vadli Documentation - Cross-Platform App Development Framework',
   description: 'Comprehensive documentation for Vadli, a powerful framework for building cross-platform applications. Learn core concepts, API references, and step-by-step tutorials.',
   keywords: 'Vadli, cross-platform, mobile development, native integration, app framework, documentation, API reference',
@@ -25,124 +25,52 @@ const DEFAULT_SEO: SeoMetaData = {
 
 const SITE_URL = 'https://vadli-docs.onecat.dev'
 
-/**
- * Update document meta tags
- */
-export function updateMetaTags(meta: SeoMetaData) {
-  const config = { ...DEFAULT_SEO, ...meta }
-
-  // Update title
-  if (config.title) {
-    document.title = config.title
-    updateMetaTag('name', 'title', config.title)
-    updateMetaTag('property', 'og:title', config.title)
-    updateMetaTag('name', 'twitter:title', config.title)
+function setTag(attr: 'name' | 'property', key: string, val: string) {
+  let el = document.querySelector(`meta[${attr}="${key}"]`)
+  if (!el) {
+    el = document.createElement('meta')
+    el.setAttribute(attr, key)
+    document.head.appendChild(el)
   }
-
-  // Update description
-  if (config.description) {
-    updateMetaTag('name', 'description', config.description)
-    updateMetaTag('property', 'og:description', config.description)
-    updateMetaTag('name', 'twitter:description', config.description)
-  }
-
-  // Update keywords
-  if (config.keywords) {
-    updateMetaTag('name', 'keywords', config.keywords)
-  }
-
-  // Update author
-  if (config.author) {
-    updateMetaTag('name', 'author', config.author)
-  }
-
-  // Update Open Graph type
-  if (config.ogType) {
-    updateMetaTag('property', 'og:type', config.ogType)
-  }
-
-  // Update images
-  if (config.ogImage) {
-    updateMetaTag('property', 'og:image', config.ogImage)
-    updateMetaTag('name', 'twitter:image', config.ogImage)
-  }
-
-  // Update Twitter card
-  if (config.twitterCard) {
-    updateMetaTag('name', 'twitter:card', config.twitterCard)
-  }
-
-  // Update robots
-  if (config.robots) {
-    updateMetaTag('name', 'robots', config.robots)
-  }
-
-  // Update canonical URL
-  if (config.canonical) {
-    updateLinkTag('canonical', config.canonical)
-    updateMetaTag('property', 'og:url', config.canonical)
-    updateMetaTag('name', 'twitter:url', config.canonical)
-  }
+  el.setAttribute('content', val)
 }
 
-/**
- * Helper function to update or create meta tags
- */
-function updateMetaTag(attribute: 'name' | 'property', key: string, content: string) {
-  let element = document.querySelector(`meta[${attribute}="${key}"]`)
-
-  if (!element) {
-    element = document.createElement('meta')
-    element.setAttribute(attribute, key)
-    document.head.appendChild(element)
+function setLink(rel: string, href: string) {
+  let el = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement
+  if (!el) {
+    el = document.createElement('link')
+    el.rel = rel
+    document.head.appendChild(el)
   }
-
-  element.setAttribute('content', content)
+  el.href = href
 }
 
-/**
- * Helper function to update or create link tags
- */
-function updateLinkTag(rel: string, href: string) {
-  let element = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement
-
-  if (!element) {
-    element = document.createElement('link')
-    element.rel = rel
-    document.head.appendChild(element)
-  }
-
-  element.href = href
+export function setMeta(m: SeoMetaData) {
+  const c = { ...DEFAULT, ...m }
+  c.title && (document.title = c.title, ['title', 'og:title', 'twitter:title'].forEach(k => setTag('name', k, c.title!)))
+  c.description && (document.title = c.description, ['description', 'og:description', 'twitter:description'].forEach(k => setTag('name', k, c.description!)))
+  c.keywords && setTag('name', 'keywords', c.keywords)
+  c.author && setTag('name', 'author', c.author)
+  c.ogType && setTag('property', 'og:type', c.ogType)
+  c.ogImage && (setTag('property', 'og:image', c.ogImage), setTag('name', 'twitter:image', c.ogImage))
+  c.twitterCard && setTag('name', 'twitter:card', c.twitterCard)
+  c.robots && setTag('name', 'robots', c.robots)
+  c.canonical && (setLink('canonical', c.canonical), setTag('property', 'og:url', c.canonical), setTag('name', 'twitter:url', c.canonical))
 }
 
-/**
- * Generate SEO metadata for documentation pages
- */
-export function generateDocSeo(category: string, slug: string, title: string, content?: string): SeoMetaData {
-  const fullSlug = `${category}/${slug}`
-  const url = `${SITE_URL}/${fullSlug}`
-
-  // Extract description from content (first 160 chars)
-  let description = DEFAULT_SEO.description
+export function docMeta(cat: string, slug: string, title: string, content?: string): SeoMetaData {
+  const url = `${SITE_URL}/${cat}/${slug}`
+  let desc = DEFAULT.description
   if (content) {
-    const plainText = content.replace(/[#*`]/g, '').trim()
-    const firstParagraph = plainText.split('\n').find(line => line.length > 20)
-    if (firstParagraph) {
-      description = firstParagraph.substring(0, 157) + '...'
-    }
+    const plain = content.replace(/[#*`]/g, '').trim()
+    const para = plain.split('\n').find(l => l.length > 20)
+    if (para) desc = para.substring(0, 157) + '...'
   }
-
-  // Generate title with category context
-  const categoryName = category.charAt(0).toUpperCase() + category.slice(1)
-  const fullTitle = `${title} - ${categoryName} | Vadli Documentation`
-
-  // Generate keywords based on category and title
-  const keywords = `${title.toLowerCase()}, Vadli ${category}, ${DEFAULT_SEO.keywords}`
-
+  const catName = cat.charAt(0).toUpperCase() + cat.slice(1)
   return {
-    title: fullTitle,
-    description,
-    keywords,
+    title: `${title} - ${catName} | Vadli Documentation`,
+    description: desc,
+    keywords: `${title.toLowerCase()}, Vadli ${cat}, ${DEFAULT.keywords}`,
     canonical: url,
     ogType: 'article',
     ogImage: `${SITE_URL}/og-image.png`,
@@ -150,73 +78,34 @@ export function generateDocSeo(category: string, slug: string, title: string, co
   }
 }
 
-/**
- * Add JSON-LD structured data
- */
-export function addStructuredData(data: object) {
-  // Remove existing structured data
+export function setJsonLd(data: object) {
   const existing = document.querySelector('script[type="application/ld+json"]')
-  if (existing) {
-    existing.remove()
-  }
-
-  // Add new structured data
+  if (existing) existing.remove()
   const script = document.createElement('script')
   script.type = 'application/ld+json'
   script.textContent = JSON.stringify(data)
   document.head.appendChild(script)
 }
 
-/**
- * Generate breadcrumb structured data
- */
-export function generateBreadcrumbData(path: string): object {
+export function crumbData(path: string): object {
   const parts = path.split('/').filter(Boolean)
-  const items = [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      name: 'Home',
-      item: SITE_URL
-    }
-  ]
-
-  let currentPath = ''
-  parts.forEach((part, index) => {
-    currentPath += `/${part}`
-    items.push({
-      '@type': 'ListItem',
-      position: index + 2,
-      name: part.charAt(0).toUpperCase() + part.slice(1).replace(/-/g, ' '),
-      item: `${SITE_URL}${currentPath}`
-    })
+  const items = [{ '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL }]
+  let cur = ''
+  parts.forEach((p, i) => {
+    cur += `/${p}`
+    items.push({ '@type': 'ListItem', position: i + 2, name: p.charAt(0).toUpperCase() + p.slice(1).replace(/-/g, ' '), item: `${SITE_URL}${cur}` })
   })
-
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: items
-  }
+  return { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items }
 }
 
-/**
- * Generate documentation article structured data
- */
-export function generateArticleData(title: string, description: string, url: string): object {
+export function articleData(title: string, desc: string, url: string): object {
   return {
     '@context': 'https://schema.org',
     '@type': 'TechArticle',
     headline: title,
-    description: description,
-    url: url,
-    publisher: {
-      '@type': 'Organization',
-      name: 'Vadli',
-      url: SITE_URL
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': url
-    }
+    description: desc,
+    url,
+    publisher: { '@type': 'Organization', name: 'Vadli', url: SITE_URL },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url }
   }
 }

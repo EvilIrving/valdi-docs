@@ -1,66 +1,29 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import type { NavSection } from '@/utils/docs-logic'
 
-const props = defineProps<{
-	sections: NavSection[]
-}>()
-
+const props = defineProps<{ sections: NavSection[] }>()
 const route = useRoute()
-const expandedSection = ref<string | null>(null)
+const expanded = ref<string | null>(null)
 
-// 根据当前路由自动展开对应的 section
-const currentPath = computed(() => route.path)
+watch(() => route.path, p => {
+  expanded.value = props.sections.find(s => s.items.some(i => i.href === p))?.title || null
+}, { immediate: true })
 
-watch(
-	currentPath,
-	(path) => {
-		for (const section of props.sections) {
-			if (section.items.some((item) => item.href === path)) {
-				expandedSection.value = section.title
-				break
-			}
-		}
-	},
-	{ immediate: true }
-)
-
-function toggleSection(title: string) {
-	if (expandedSection.value === title) {
-		expandedSection.value = null
-	} else {
-		expandedSection.value = title
-	}
-}
-
-function isItemActive(href: string): boolean {
-	return route.path === href
-}
+const toggle = (t: string) => expanded.value = expanded.value === t ? null : t
+const isActive = (h: string) => route.path === h
 </script>
 
 <template>
-	<aside class="sidebar">
-		<div
-			v-for="section in sections"
-			:key="section.title"
-			class="sidebar__section"
-			:class="{ expanded: expandedSection === section.title }"
-		>
-			<div class="sidebar__section-title" @click="toggleSection(section.title)">
-				{{ section.title }}
-			</div>
-			<div class="sidebar__items">
-				<RouterLink
-					v-for="item in section.items"
-					:key="item.href"
-					:to="item.href"
-					class="sidebar__item"
-					:class="{ active: isItemActive(item.href) }"
-				>
-					{{ item.title }}
-				</RouterLink>
-			</div>
-		</div>
-	</aside>
+  <aside class="sidebar">
+    <div v-for="s in sections" :key="s.title" class="sidebar__section" :class="{ expanded: expanded === s.title }">
+      <div class="sidebar__section-title" @click="toggle(s.title)">{{ s.title }}</div>
+      <div class="sidebar__items">
+        <RouterLink v-for="i in s.items" :key="i.href" :to="i.href" class="sidebar__item" :class="{ active: isActive(i.href) }">
+          {{ i.title }}
+        </RouterLink>
+      </div>
+    </div>
+  </aside>
 </template>

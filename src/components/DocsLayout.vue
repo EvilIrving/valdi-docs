@@ -2,19 +2,15 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import Sidebar from './Sidebar.vue'
-import { getDocsNavigation, getApiNavigation, getCodelabsNavigation } from '@/utils/docs-logic'
+import { docsNav, apiNav, labsNav } from '@/utils/docs-logic'
 
 const route = useRoute()
 
 const navigation = computed(() => {
-	const path = route.path
-	if (path.startsWith('/api/')) {
-		return getApiNavigation()
-	} else if (path.startsWith('/codelabs/')) {
-		return getCodelabsNavigation()
-	} else {
-		return getDocsNavigation()
-	}
+	const p = route.path
+	if (p.startsWith('/api/')) return apiNav()
+	if (p.startsWith('/codelabs/')) return labsNav()
+	return docsNav()
 })
 </script>
 
