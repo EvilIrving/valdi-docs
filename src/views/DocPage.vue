@@ -23,6 +23,15 @@ const seoMeta = computed(() => {
 })
 
 seo(seoMeta)
+
+// Breadcrumb path
+const breadcrumbPath = computed(() => {
+  const parts = fullSlug.value.split('/')
+  return parts.map((p, i) => ({
+    name: p.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+    href: '/' + parts.slice(0, i + 1).join('/')
+  }))
+})
 </script>
 
 <template>
@@ -38,7 +47,21 @@ seo(seoMeta)
       <RouterLink to="/" class="home__btn home__btn--primary">Back to Home</RouterLink>
     </div>
     <div v-else class="docs-content__wrapper">
-      <pre class="docs-content__text">{{ content }}</pre>
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <span class="breadcrumb__item">docs</span>
+        <span class="breadcrumb__sep">/</span>
+        <template v-for="(part, i) in breadcrumbPath" :key="part.href">
+          <RouterLink :to="part.href" class="breadcrumb__item">{{ part.name }}</RouterLink>
+          <span v-if="i < breadcrumbPath.length - 1" class="breadcrumb__sep">/</span>
+        </template>
+      </nav>
+
+      <h1 class="docs-content__title">{{ pageTitle }}</h1>
+      <div class="docs-content__meta">
+        <span>{{ fullSlug }}</span>
+      </div>
+      <div class="docs-content__text">{{ content }}</div>
     </div>
   </DocsLayout>
 </template>

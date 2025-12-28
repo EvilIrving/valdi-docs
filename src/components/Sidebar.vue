@@ -18,9 +18,13 @@ const isActive = (h: string) => route.path === h
 <template>
   <aside class="sidebar">
     <div v-for="s in sections" :key="s.title" class="sidebar__section" :class="{ expanded: expanded === s.title }">
-      <div class="sidebar__section-title" @click="toggle(s.title)">{{ s.title }}</div>
+      <div class="sidebar__section-title" @click="toggle(s.title)">
+        <span class="tree-toggle" :class="{ expanded: expanded === s.title }">▶</span>
+        {{ s.title }}
+      </div>
       <div class="sidebar__items">
         <RouterLink v-for="i in s.items" :key="i.href" :to="i.href" class="sidebar__item" :class="{ active: isActive(i.href) }">
+          <span class="tree-node">├</span>
           {{ i.title }}
         </RouterLink>
       </div>

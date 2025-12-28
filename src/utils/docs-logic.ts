@@ -6,7 +6,7 @@ export interface NavItem { title: string; href: string; order?: number }
 export interface NavSection { title: string; items: NavItem[]; order: number }
 export interface RouteResult<T> { status: number; data?: T; error?: Error }
 export interface DocRouteData { content: string; metadata: Record<string, unknown> }
-export interface HomeConfig { title: string; subtitle: string; primary: NavItem; secondary: NavItem; features: { title: string; desc: string; href: string; label: string }[] }
+export interface HomeConfig { title: string; subtitle: string; primary: NavItem; secondary: NavItem; features: { title: string; desc: string; href: string; label: string }[]; aboutMarkdown?: { title: string; desc: string; repoUrl: string } }
 
 // content loading
 const mods = import.meta.glob<DocModule>('/src/content/**/*.md', { eager: true, query: '?raw' })
@@ -118,5 +118,10 @@ export const HOME: HomeConfig = {
     { title: 'Documentation', desc: 'Comprehensive guides covering all aspects of Vadli development.', href: '/docs/start-introduction', label: 'Read the docs' },
     { title: 'Code Labs', desc: 'Step-by-step tutorials to help you learn by doing.', href: '/codelabs/getting_started/1-introduction', label: 'Start learning' },
     { title: 'API Reference', desc: 'Detailed API documentation for all elements and attributes.', href: '/api/api-quick-reference', label: 'View API' }
-  ]
+  ],
+  aboutMarkdown: {
+    title: 'About This Documentation Site',
+    desc: 'The official GitHub documentation requires switching directories to view Markdown files, which loads slowly and provides poor user experience. Parsing Markdown itself is straightforward, but implementing all the edge cases and special syntax features requires significant effort. Prioritizing a fast-loading web version of the documentation was more important.',
+    repoUrl: 'https://github.com/onecat-cn/vadli-docs'
+  }
 }

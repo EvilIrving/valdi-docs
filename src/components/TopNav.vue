@@ -20,7 +20,10 @@ function isActive(href: string): boolean {
 
 <template>
 	<nav class="topnav">
-		<RouterLink to="/" class="topnav__logo">Vadli</RouterLink>
+		<RouterLink to="/" class="topnav__logo">
+			<span class="topnav__logo-icon">&gt;_</span>
+			Vadli
+		</RouterLink>
 		<div class="topnav__links">
 			<RouterLink
 				v-for="link in navLinks"
